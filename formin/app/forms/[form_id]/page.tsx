@@ -36,16 +36,24 @@ export default function Form() {
 	return (
 		<div className='max-w-2xl w-full flex items-center justify-around mx-auto p-4 rounded-lg shadow-xl *:w-full'>
 			<div>
-				{/* <h2 className='text-xl font-semibold'>Submit Response</h2> */}
 				<h2 className='text-xl font-semibold'>{form.title}</h2>
-				<Label>Form id: {form_id}</Label>
-				<p className=''>{form.description}</p>
-				<Separator></Separator>
-				<form className='pl-2' onSubmit={(e) => handleSubmit(e)}>
+				<span className='italic ml-1'>{form.description}</span>
+				<Separator className='my-1'></Separator>
+				<form className='pl-2 mt-2' onSubmit={(e) => handleSubmit(e)}>
+					<span className='italic'>Fill the following</span>
 					{form.fields.map((field) => {
 						return (
 							<div key={crypto.randomUUID()}>
-								<Label>{field.question}</Label>
+								<Label>
+									{`${field.question}`}{" "}
+									{field.required ? (
+										<span className='text-red-800 align-top italic px-1'>
+											*
+										</span>
+									) : (
+										<span className="italic text-sm">(Optional)</span>
+									)}
+								</Label>
 								{renderField(field as Field)}
 							</div>
 						);
