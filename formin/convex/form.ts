@@ -18,7 +18,7 @@ export const updateForm = mutation({
 });
 
 export const getForm = query({
-	args: { id: v.string() },
+	args: { id: v.id("form") },
 	handler: async (ctx, args) => {
 		const form = await ctx.db
 			.query("form")

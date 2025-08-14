@@ -4,7 +4,7 @@ import { mutation } from "./_generated/server";
 export const createResponse = mutation({
 	args: {
 		form_id: v.id("form"),
-		response: v.string(),
+		response: v.array(v.string()),
 	},
 	handler: async (ctx, args) => {
 		const response_id = await ctx.db.insert("responses", args);

@@ -22,6 +22,6 @@ export default defineSchema({
 
 	responses: defineTable({
 		form_id: v.id("form"),
-		response: v.string(),
+		response: v.array(v.string()),
 	}),
 });

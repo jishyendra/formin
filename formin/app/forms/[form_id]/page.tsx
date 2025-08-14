@@ -4,30 +4,32 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
 import { useParams } from "next/navigation";
 
-import { useQuery } from "convex/react";
+import { useQuery, useMutation } from "convex/react";
+import { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 import { Separator } from "@/components/ui/separator";
-import { FieldType, Field } from "@/lib/types";
+import { Field } from "@/lib/types";
 import { renderField } from "@/components/FormPreview";
 
 export default function Form() {
 	const { form_id } = useParams();
+	const createResponse = useMutation(api.response.createResponse);
 	if (!form_id) {
 		return <div>No form found id</div>;
 	}
-	const form = useQuery(api.form.getForm, { id: form_id as string });
+	const form = useQuery(api.form.getForm, { id: form_id as Id<"form"> });
 	console.log(form);
 
 	if (!form) {
 		return <div>No form found</div>;
 	}
 
-	function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+	async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 		const formData = new FormData(e.currentTarget);
-		console.log("Form submitted with data:");
-		formData.forEach((key) => {
-			console.log(`${key}`);
+		const res = await createResponse({
+			form_id: form_id as Id<"form">,
+			response: Array.from(formData.values()) as string[],
 		});
 	}
 

@@ -45,6 +45,7 @@ export const renderField = (field: Field) => {
 			return (
 				<Input
 					type='email'
+					name={field.question}
 					placeholder={field.question}
 					required={field.required}
 				/>
@@ -53,6 +54,7 @@ export const renderField = (field: Field) => {
 			return (
 				<Input
 					type='number'
+					name={field.question}
 					placeholder={field.question}
 					required={field.required}
 				/>
@@ -61,6 +63,7 @@ export const renderField = (field: Field) => {
 			return (
 				<Input
 					type='tel'
+					name={field.question}
 					placeholder='Phone Number'
 					required={field.required}
 				/>
@@ -69,6 +72,7 @@ export const renderField = (field: Field) => {
 			return (
 				<Input
 					type='file'
+					name={field.question}
 					placeholder='Upload File'
 					required={field.required}
 				/>
@@ -77,6 +81,7 @@ export const renderField = (field: Field) => {
 			return (
 				<Input
 					type='text'
+					name={field.question}
 					placeholder={field.question}
 					required={field.required}
 				/>
