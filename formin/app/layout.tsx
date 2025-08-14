@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import "./styles/globals.css";
-import Navbar from "@/components/Navigation";
 import { Fira_Sans } from "next/font/google";
+import Link from "next/link";
+import { ConvexClientProvider } from "@/components/ConvexClientProvider";
 // import { Geist, Geist_Mono } from "next/font/google";
 
 // const geistSans = Geist({
@@ -33,9 +34,13 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='en'>
-			<body className={`${firaSans}`}>
-				<Navbar />
-				<main>{children}</main>
+			<body className={`relative ${firaSans}`}>
+				<ConvexClientProvider>
+					<Link href='/'>
+						<h1 className='font-bold text-2xl'>formin</h1>
+					</Link>
+					<main className='relative'>{children}</main>
+				</ConvexClientProvider>
 			</body>
 		</html>
 	);

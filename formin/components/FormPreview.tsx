@@ -18,55 +18,10 @@ export default function FormPreview({ className }: { className?: string }) {
 				className='max-w-2xl p-3 grid gap-3 border-2 rounded-sm mx-auto'
 			>
 				{fields.map((field) => {
-					const renderField = () => {
-						switch (field.type) {
-							case FieldType.Email:
-								return (
-									<Input
-										type='email'
-										placeholder={field.question}
-										required={field.required}
-									/>
-								);
-							case FieldType.Numeric:
-								return (
-									<Input
-										type='number'
-										placeholder={field.question}
-										required={field.required}
-									/>
-								);
-							case FieldType.Phone:
-								return (
-									<Input
-										type='tel'
-										placeholder='Phone Number'
-										required={field.required}
-									/>
-								);
-							case FieldType.File:
-								return (
-									<Input
-										type='file'
-										placeholder='Upload File'
-										required={field.required}
-									/>
-								);
-							default:
-								return (
-									<Input
-										type='text'
-										placeholder={field.question}
-										required={field.required}
-									/>
-								);
-						}
-					};
-
 					return (
 						<div key={crypto.randomUUID()}>
 							<Label>{field.question}</Label>
-							{renderField()}
+							{renderField(field)}
 						</div>
 					);
 				})}{" "}
@@ -83,3 +38,48 @@ export default function FormPreview({ className }: { className?: string }) {
 		</div>
 	);
 }
+
+export const renderField = (field: Field) => {
+	switch (field.type) {
+		case FieldType.Email:
+			return (
+				<Input
+					type='email'
+					placeholder={field.question}
+					required={field.required}
+				/>
+			);
+		case FieldType.Numeric:
+			return (
+				<Input
+					type='number'
+					placeholder={field.question}
+					required={field.required}
+				/>
+			);
+		case FieldType.Phone:
+			return (
+				<Input
+					type='tel'
+					placeholder='Phone Number'
+					required={field.required}
+				/>
+			);
+		case FieldType.File:
+			return (
+				<Input
+					type='file'
+					placeholder='Upload File'
+					required={field.required}
+				/>
+			);
+		default:
+			return (
+				<Input
+					type='text'
+					placeholder={field.question}
+					required={field.required}
+				/>
+			);
+	}
+};

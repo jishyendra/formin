@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { User, FileText, BarChart3, Mail } from "lucide-react";
 import { FormDescription } from "@/components/FormDescription";
+import { Button } from "@/components/ui/button";
 import {
 	Sidebar,
 	SidebarContent,
@@ -13,38 +14,62 @@ import {
 } from "@/components/ui/sidebar";
 import FormEntries from "@/components/FormEntries";
 import FormPreview from "@/components/FormPreview";
+import { useFormDescription, useFormFields } from "@/lib/stores/formstore";
+
+import { useMutation, useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 export default function FormEditor() {
-	const [activeTab, setActiveTab] = useState("tab1");
-	const [preview, setPreview] = useState(false);
+	const { title, description } = useFormDescription();
+	const { fields } = useFormFields();
+	const [activeTab, setActiveTab] = useState(1);
+	const createForm = useMutation(api.form.createForm);
+
+	async function handleCreateForm() {
+		const formArgs = { title, isPublic: true, description, fields };
+		const form_id = await createForm(formArgs);
+		if (!form_id) {
+			console.error("Failed to create form");
+			return;
+		}
+		console.log("Form created with ID:", form_id);
+	}
+
 	const tabs = [
 		{
-			id: "tab1",
+			id: 1,
 			label: "Form Description",
 			icon: BarChart3,
 			content: <FormDescription />,
 		},
 		{
-			id: "tab2",
+			id: 2,
 			label: "Add Fields",
 			icon: User,
 			content: <FormEntries />,
 		},
 		{
-			id: "tab3",
+			id: 3,
 			label: "Preview",
 			icon: FileText,
 			content: <FormPreview />,
 		},
 		{
-			id: "tab4",
+			id: 4,
 			label: "Share",
 			icon: Mail,
 			content: (
 				<div className='flex items-center justify-center h-full'>
 					<div className='text-center'>
 						<h1 className='text-6xl font-bold text-gray-900 mb-4'>5</h1>
-						Share Tab
+						<Button
+							onClick={handleCreateForm}
+							className='bg-blue-600 text-white hover:bg-blue-700 transition-colors'
+							size='lg'
+							disabled={false}
+						>
+							Publish
+						</Button>
 					</div>
 				</div>
 			),
@@ -54,11 +79,11 @@ export default function FormEditor() {
 	return (
 		<div className='sm:flex h-screen bg-gray-50'>
 			<SidebarProvider>
+				<SidebarTrigger className='absolute' />
 				<Sidebar>
 					<SidebarHeader>
 						<div className='flex items-center justify-between p-3 border-b'>
 							<h2 className='text-lg font-semibold'>Form Editor</h2>
-							<SidebarTrigger />
 						</div>
 					</SidebarHeader>
 					<SidebarContent>
@@ -88,12 +113,21 @@ export default function FormEditor() {
 				</Sidebar>
 
 				<SidebarInset>
-					<header className='flex shrink-0 items-center gap-2 border-b'>
-						<div className='flex items-center gap-2'>
-							<SidebarTrigger />
-						</div>
-					</header>
-					<div className='p-2'>{activeTabData?.content}</div>
+					<SidebarTrigger />
+					{/* <header className='flex shrink-0 items-center gap-2 border-b'>
+						<div className='flex items-center gap-2'></div>
+					</header> */}
+					<div className='p-2'>
+						{activeTabData?.content}
+						<Button
+							className='w-full p-4 max-w-xl mx-auto bg-blue-500 text-white hover:bg-blue-700 transition-colors mt-1'
+							onClick={(e) =>
+								setActiveTab((prev) => (prev < tabs.length ? prev + 1 : prev))
+							}
+						>
+							Next
+						</Button>
+					</div>
 				</SidebarInset>
 			</SidebarProvider>
 		</div>

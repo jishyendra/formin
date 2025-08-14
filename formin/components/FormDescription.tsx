@@ -4,7 +4,9 @@ import { useFormDescription } from "@/lib/stores/formstore";
 import { Button } from "./ui/button";
 
 export function FormDescription() {
-	const { title, setTitle } = useFormDescription((state) => state);
+	const { title, description, setTitle, setDescription } = useFormDescription(
+		(state) => state
+	);
 	return (
 		<>
 			<div id='description' className='grid gap-2 mt-2 w-full max-w-xl'>
@@ -15,9 +17,19 @@ export function FormDescription() {
 						<input
 							className='p-1 border border-gray-300 rounded-sm w-full'
 							type='text'
-							placeholder='Enter the form title'
+							placeholder='Enter title'
 							onChange={(e) => setTitle(e.target.value)}
 							value={title}
+						></input>
+					</Label>
+					<Label className='block'>
+						Form Description
+						<input
+							className='p-1 border border-gray-300 rounded-sm w-full'
+							type='text'
+							placeholder='Add description'
+							onChange={(e) => setDescription(e.target.value)}
+							value={description}
 						></input>
 					</Label>
 					<Label className='block'>
