@@ -1,12 +1,16 @@
 "use client";
 import { Label } from "./ui/label";
+import { Input } from "./ui/input";
 import { useFormDescription } from "@/lib/stores/formstore";
 import { Button } from "./ui/button";
+import { z } from "zod";
 
 export function FormDescription() {
+
 	const { title, description, setTitle, setDescription } = useFormDescription(
 		(state) => state
 	);
+
 	return (
 		<>
 			<div id='description' className='grid gap-2 mt-2 w-full max-w-xl'>
@@ -14,37 +18,36 @@ export function FormDescription() {
 				<div className='grid gap-2'>
 					<Label className='block'>
 						Form title
-						<input
+						<Input
 							className='p-1 border border-gray-300 rounded-sm w-full'
 							type='text'
 							placeholder='Enter title'
 							onChange={(e) => setTitle(e.target.value)}
 							value={title}
-						></input>
+						></Input>
 					</Label>
 					<Label className='block'>
 						Form Description
-						<input
+						<Input
 							className='p-1 border border-gray-300 rounded-sm w-full'
 							type='text'
 							placeholder='Add description'
 							onChange={(e) => setDescription(e.target.value)}
 							value={description}
-						></input>
+						></Input>
 					</Label>
 					<Label className='block'>
 						Add Logo <i>(Optional)</i>
 						<Button variant={"outline"}>
-							<input
+							<Input
 								type='file'
-								className='w-full h-full'
+								className='p-1 border border-gray-300 rounded-sm w-full'
 								accept='image/*'
 								placeholder='Add logo'
-							></input>
+							></Input>
 						</Button>
 					</Label>
 				</div>
-				<Button type='button'>Save</Button>
 			</div>
 		</>
 	);

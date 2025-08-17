@@ -1,8 +1,9 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { useFormFields } from "@/lib/stores/formstore";
-import { X } from "lucide-react";
-import { Field, FieldType } from "@/lib/types";
+import { X, PlusIcon } from "lucide-react";
+import { Separator } from "./ui/separator";
+import { Field } from "@/lib/types";
 import { Button } from "./ui/button";
 import CreateForm from "./CreateForm";
 
@@ -54,10 +55,16 @@ export default function FormEntries() {
 
 	return (
 		<>
-			<div className='flex justify-between p-2 w-full'>
-				<p>Questions</p>
-				<Button onClick={handleDialogOpen}>New Question</Button>
+			<div className='flex justify-between items-center pb-1 mb-4'>
+				<span>Add fields here</span>
+				<div className='grid mt-2'>
+					<Button className='ml-auto px-2' onClick={handleDialogOpen}>
+						<PlusIcon />
+						New
+					</Button>
+				</div>
 			</div>
+			{/* <Separator className='h-2 mb-2'></Separator> */}
 			<dialog
 				className='m-auto w-full max-w-md aspect-square rounded-lg overflow-hidden'
 				ref={dialogRef}
@@ -72,14 +79,16 @@ export default function FormEntries() {
 					<CreateForm />
 				</div>
 			</dialog>
-
 			<div>
 				{fields.length > 0 ? (
 					fields.map((field, idx) => (
 						<FieldEntry key={crypto.randomUUID()} idx={idx} field={field} />
 					))
 				) : (
-					<div>Add questions to view.</div>
+					<div className='h-48 flex justify-center items-center'>
+						No fields added
+						{/* Add some form questions... */}
+					</div>
 				)}
 			</div>
 		</>

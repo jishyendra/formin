@@ -1,13 +1,20 @@
 "use client";
-import { Field, FieldType } from "@/lib/types";
 import { Button } from "@/components/ui/button";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
 import { useFormFields } from "@/lib/stores/formstore";
 import { cn } from "@/lib/utils";
+import { RenderField } from "./RenderField";
+import { Label } from "./ui/label";
+import { useForm } from "react-hook-form";
 
-export default function FormPreview({ className }: { className?: string }) {
+export default function FormPreview({
+	className,
+	handleCreateForm,
+}: {
+	className?: string;
+	handleCreateForm: () => void;
+}) {
 	const fields = useFormFields((state) => state.fields);
+	const { register } = useForm();
 	return (
 		<div className={cn(className)}>
 			<h2 className='text-xl font-bold mb-4'>Form Preview</h2>
@@ -21,70 +28,21 @@ export default function FormPreview({ className }: { className?: string }) {
 					return (
 						<div key={crypto.randomUUID()}>
 							<Label>{field.question}</Label>
-							{renderField(field)}
+							{RenderField(field, register)}
 						</div>
 					);
-				})}{" "}
-				<Button
-					type='button'
-					variant={"secondary"}
-					onClick={function () {
-						return;
-					}}
-				>
-					Submit
-				</Button>
+				})}
 			</form>
+			<div className='text-center mt-5'>
+				<Button
+					onClick={handleCreateForm}
+					className='bg-blue-600 text-white hover:bg-blue-700 transition-colors'
+					size='lg'
+					disabled={false}
+				>
+					Publish
+				</Button>
+			</div>
 		</div>
 	);
 }
-
-export const renderField = (field: Field) => {
-	switch (field.type) {
-		case FieldType.Email:
-			return (
-				<Input
-					type='email'
-					name={field.question}
-					placeholder={field.question}
-					required={field.required}
-				/>
-			);
-		case FieldType.Numeric:
-			return (
-				<Input
-					type='number'
-					name={field.question}
-					placeholder={field.question}
-					required={field.required}
-				/>
-			);
-		case FieldType.Phone:
-			return (
-				<Input
-					type='tel'
-					name={field.question}
-					placeholder='Phone Number'
-					required={field.required}
-				/>
-			);
-		case FieldType.File:
-			return (
-				<Input
-					type='file'
-					name={field.question}
-					placeholder='Upload File'
-					required={field.required}
-				/>
-			);
-		default:
-			return (
-				<Input
-					type='text'
-					name={field.question}
-					placeholder={field.question}
-					required={field.required}
-				/>
-			);
-	}
-};

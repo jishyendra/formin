@@ -2,21 +2,31 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
+import { Error } from "@/components/ui/errors";
 import { useParams } from "next/navigation";
+import { Separator } from "@/components/ui/separator";
+import { RenderField } from "@/components/RenderField";
+import type { Field } from "@/lib/types";
+
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 import { useQuery, useMutation } from "convex/react";
 import { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
-import { Separator } from "@/components/ui/separator";
-import { Field } from "@/lib/types";
-import { renderField } from "@/components/FormPreview";
 
 export default function Form() {
 	const { form_id } = useParams();
-	const createResponse = useMutation(api.response.createResponse);
 	if (!form_id) {
 		return <div>No form found id</div>;
 	}
+
+	const {
+		register,
+		formState: { errors },
+	} = useForm({ mode: "onSubmit" });
+
+	const createResponse = useMutation(api.response.createResponse);
 	const form = useQuery(api.form.getForm, { id: form_id as Id<"form"> });
 	console.log(form);
 
@@ -27,12 +37,13 @@ export default function Form() {
 	async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 		const formData = new FormData(e.currentTarget);
+
 		const res = await createResponse({
 			form_id: form_id as Id<"form">,
 			response: Array.from(formData.values()) as string[],
 		});
+		console.log("response created: ", res);
 	}
-
 	return (
 		<div className='max-w-2xl w-full flex items-center justify-around mx-auto p-4 rounded-lg shadow-xl *:w-full'>
 			<div>
@@ -51,10 +62,13 @@ export default function Form() {
 											*
 										</span>
 									) : (
-										<span className="italic text-sm">(Optional)</span>
+										<span className='italic text-sm'>(Optional)</span>
 									)}
 								</Label>
-								{renderField(field as Field)}
+								{RenderField(field as Field, register)}
+								{errors[field.question] && (
+									<Error error={errors[field.question]?.message || " "} />
+								)}
 							</div>
 						);
 					})}

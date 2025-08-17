@@ -5,10 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useFormFields } from "@/lib/stores/formstore";
 import { Button } from "@/components/ui/button";
+import { Check } from "lucide-react";
 
 export default function CreateForm() {
 	const [question, setQuestion] = useState("");
-
 	const [fieldType, setFieldType] = useState<FieldType>(FieldType.Default);
 	const checkboxRef = useRef<HTMLInputElement>(null);
 
@@ -20,18 +20,34 @@ export default function CreateForm() {
 		setFieldType(value);
 	}
 
+	const addNewField = () => {
+		addField({
+			question: question,
+			type: fieldType,
+			required: checkboxRef.current?.checked || false,
+		});
+
+		setQuestion("");
+		setFieldType(FieldType.Default);
+		setFieldAdded(true);
+		checkboxRef.current!.checked = false;
+	};
+
 	return (
 		<div id='addfields' className='max-w-xl w-full'>
 			<h1 className='text-xl font-bold mb-4'>Add Fields</h1>
-			<div className='grid'>
+			<div className='grid gap-2'>
 				<div>
-					<Label>Ask Question / Set Title</Label>
+					<Label>Question</Label>
 					<Input
 						type='text'
 						required
 						value={question}
-						placeholder='Ask question or set title for the field'
-						onChange={(e) => setQuestion(e.target.value)}
+						placeholder='Ask question'
+						onChange={(e) => {
+							setFieldAdded(false);
+							setQuestion(e.target.value);
+						}}
 					/>
 				</div>
 				<div>
@@ -60,28 +76,16 @@ export default function CreateForm() {
 						/>
 					</Label>
 				</div>
-				<Button
-					type='button'
-					onClick={() => {
-						addField({
-							question: question,
-							type: fieldType,
-							required: checkboxRef.current?.checked || false,
-						});
-
-						setQuestion("");
-						setFieldType(FieldType.Default);
-						setFieldAdded(true);
-						checkboxRef.current!.checked = false;
-						setTimeout(() => {
-							setFieldAdded(false);
-						}, 700);
-					}}
-				>
-					Add Field
+				<Button onClick={() => addNewField()}>
+					{fieldAdded ? (
+						<>
+							Added <Check />
+						</>
+					) : (
+						"Add"
+					)}
 				</Button>
 			</div>
-			{fieldAdded && <span className='w-full bg-green-300'>Added</span>}
 		</div>
 	);
 }

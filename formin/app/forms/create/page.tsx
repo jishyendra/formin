@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { User, FileText, BarChart3, Mail } from "lucide-react";
+import { Save, View, Plus, Notebook, FormInput, Share } from "lucide-react";
 import { FormDescription } from "@/components/FormDescription";
 import { Button } from "@/components/ui/button";
 import {
@@ -39,54 +39,35 @@ export default function FormEditor() {
 		{
 			id: 1,
 			label: "Form Description",
-			icon: BarChart3,
+			icon: FormInput,
 			content: <FormDescription />,
 		},
 		{
 			id: 2,
 			label: "Add Fields",
-			icon: User,
+			icon: Plus,
 			content: <FormEntries />,
 		},
 		{
 			id: 3,
 			label: "Preview",
-			icon: FileText,
-			content: <FormPreview />,
-		},
-		{
-			id: 4,
-			label: "Share",
-			icon: Mail,
-			content: (
-				<div className='flex items-center justify-center h-full'>
-					<div className='text-center'>
-						<h1 className='text-6xl font-bold text-gray-900 mb-4'>5</h1>
-						<Button
-							onClick={handleCreateForm}
-							className='bg-blue-600 text-white hover:bg-blue-700 transition-colors'
-							size='lg'
-							disabled={false}
-						>
-							Publish
-						</Button>
-					</div>
-				</div>
-			),
+			icon: View,
+			content: <FormPreview handleCreateForm={handleCreateForm} />,
 		},
 	];
 	const activeTabData = tabs.find((tab) => tab.id === activeTab);
 	return (
 		<div className='sm:flex h-screen bg-gray-50'>
 			<SidebarProvider>
-				<SidebarTrigger className='absolute' />
 				<Sidebar>
 					<SidebarHeader>
-						<div className='flex items-center justify-between p-3 border-b'>
-							<h2 className='text-lg font-semibold'>Form Editor</h2>
+						<div className='p-3 relative  border-b'>
+							<SidebarTrigger className='absolute right-4' />
+							<h1 className='text-xl font-bold mb-4'>formin</h1>
+							<h2 className='text-md font-semibold'>New Form</h2>
 						</div>
 					</SidebarHeader>
-					<SidebarContent>
+					<SidebarContent className='ml-2'>
 						{tabs.map((tab) => {
 							const Icon = tab.icon;
 							return (
@@ -114,19 +95,18 @@ export default function FormEditor() {
 
 				<SidebarInset>
 					<SidebarTrigger />
-					{/* <header className='flex shrink-0 items-center gap-2 border-b'>
-						<div className='flex items-center gap-2'></div>
-					</header> */}
 					<div className='p-2'>
 						{activeTabData?.content}
-						<Button
-							className='w-full p-4 max-w-xl mx-auto bg-blue-500 text-white hover:bg-blue-700 transition-colors mt-1'
-							onClick={(e) =>
-								setActiveTab((prev) => (prev < tabs.length ? prev + 1 : prev))
-							}
-						>
-							Next
-						</Button>
+						{activeTab < tabs.length && (
+							<Button
+								className='w-full p-4 max-w-xl mx-auto bg-blue-500 text-white hover:bg-blue-700 transition-colors mt-1'
+								onClick={(e) =>
+									setActiveTab((prev) => (prev < tabs.length ? prev + 1 : prev))
+								}
+							>
+								Next
+							</Button>
+						)}
 					</div>
 				</SidebarInset>
 			</SidebarProvider>
