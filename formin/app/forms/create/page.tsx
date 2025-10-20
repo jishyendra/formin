@@ -12,6 +12,7 @@ import {
 	SidebarRail,
 	SidebarHeader,
 } from "@/components/ui/sidebar";
+
 import FormEntries from "@/components/FormEntries";
 import FormPreview from "@/components/FormPreview";
 import { useFormDescription, useFormFields } from "@/lib/stores/formstore";
@@ -55,6 +56,7 @@ export default function FormEditor() {
 			content: <FormPreview handleCreateForm={handleCreateForm} />,
 		},
 	];
+
 	const activeTabData = tabs.find((tab) => tab.id === activeTab);
 	return (
 		<div className='sm:flex h-screen bg-gray-50'>

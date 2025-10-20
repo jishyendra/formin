@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { useFormFields } from "@/lib/stores/formstore";
+import { useFormFields, useFormDescription } from "@/lib/stores/formstore";
 import { cn } from "@/lib/utils";
 import { RenderField } from "./RenderField";
 import { Label } from "./ui/label";
@@ -14,10 +14,13 @@ export default function FormPreview({
 	handleCreateForm: () => void;
 }) {
 	const fields = useFormFields((state) => state.fields);
+	const { title, description } = useFormDescription((state) => state);
 	const { register } = useForm();
 	return (
-		<div className={cn(className)}>
-			<h2 className='text-xl font-bold mb-4'>Form Preview</h2>
+		<div className={cn(className,"p-2")}>
+			<span className="italic mb-2 bg-accent">Form Preview</span>
+			<h2 className='text-xl font-bold mb-4'>{title}</h2>
+			<span>{description}</span>
 			<form
 				onSubmit={function () {
 					return;
@@ -40,7 +43,7 @@ export default function FormPreview({
 					size='lg'
 					disabled={false}
 				>
-					Publish
+					Submit
 				</Button>
 			</div>
 		</div>

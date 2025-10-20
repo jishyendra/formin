@@ -1,6 +1,6 @@
 "use client";
 import { useRef, useState } from "react";
-import { FieldType, Field } from "@/lib/types";
+import { FieldType} from "@/lib/types";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useFormFields } from "@/lib/stores/formstore";

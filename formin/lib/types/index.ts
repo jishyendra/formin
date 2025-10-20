@@ -1,21 +1,21 @@
-export enum FieldType {
-	Name = "Name",
-	Email = "Email",
-
-	Phone = "Phone",
-	Numeric = "Numeric",
-
-	Default = "Default (Text)",
-
-	Url = "Url",
-	File = "File",
-
-	Country = "Country",
-}
-
 export type Field = {
 	question: string;
 	type: FieldType;
 	required: boolean;
 	options?: string[];
 };
+
+export enum FieldType {
+	Name = "name",
+	Email = "email",
+
+	Phone = "phone",
+	Numeric = "number",
+
+	Default = "text)",
+
+	Url = "url",
+	File = "file",
+
+	Country = "Country",
+}
